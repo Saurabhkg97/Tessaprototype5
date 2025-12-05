@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Registration Portal | Mobile View</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Malayalam:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Malayalam', 'Noto Sans Tamil', 'Noto Sans Telugu', sans-serif;
+            background-color: #1f2937;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        /* Mobile Frame */
+        .mobile-frame {
+            width: 100%;
+            max-width: 414px;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-gradient {
+            background: linear-gradient(180deg, #003366 0%, #004080 100%);
+        }
+
+        .ministry-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+            gap: 5px;
+        }
+
+        /* Ministry Info */
+        .ministry-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1; 
+            min-width: 0; 
+        }
+        
+        /* Language Button Container */
+        .lang-btn-container {
+            flex-shrink: 0;
+        }
+
+        .tab-active {
+            border-bottom: 3px solid #004080;
+            color: #004080;
+            font-weight: 600;
+        }
+        .tab-inactive { color: #6b7280; }
+        
+        .land-tab-active {
+            color: #004080;
+            font-weight: 600;
+            border-bottom: 2px solid #004080;
+        }
+        .land-tab-inactive { color: #6b7280; }
+
+        .page {
+            display: none;
+            width: 100%;
+            min-height: calc(100vh - 120px); 
+            animation: fadeIn 0.3s ease-in-out;
+            padding-bottom: 80px; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page.active { display: block; }
+
+        .dashboard-header-fixed {
+             padding-bottom: 4rem;
+             position: relative;
+        }
+        .dashboard-tabs {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            width: 90%;
+            padding: 8px;
+            display: flex;
+            z-index: 10;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 380px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease-out;
+        }
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        /* QR Scanner Animation */
+        @keyframes scan-line {
+            0% { top: 0; opacity: 0.5; }
+            50% { top: 100%; opacity: 1; }
+            100% { top: 0; opacity: 0.5; }
+        }
+        .scan-laser {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+            animation: scan-line 3s linear infinite;
+        }
+
+        .farmer-avatar-data {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUAAAJcAAACXCAYAAABz3kU5AAAACXBIWXMAAAsTAAALEwEAmpwYAAACxklEQVR4nO3cTY6bQBAFUG4Yx1/s8v7b40u5j47W0/nASVfS1U6654kCkiRJEgQAAAD+N7l8v61f/a6+g8/v85e/XpW8xUq/6yQd7bUvP117+e2O4B9u4N8b+G/D/jfsf1tQy0QAAAAB/7+X/37D4/NfO6e3vJ5/f/n+fQ+vXlW8xUq/6yQd7bUvP117+e2O4B/sA/79A/5B/76X/9o5veX1/PvL9+/7ePXKq5m+m//j+fsvH//v7f/L8/n971d/1n/H5/X531e/X1X8j6f/t+/f3w/h2/g3/v93+N+fPjP5/Zc/7H/k+n+e//7j+f2u2sNf4O+f//m48121hn/Af+fD/j/gX9f/4bH5792Tm95Pf/+8v37Hl69qvj77f/tA/4e3P53X/3H9/f737c//eT9f/y/uX/+/L/F5/X531e/X1X8j6f/t+/f3w/h2/i7/v8d/f32/v/8P//H//f9/m3d9f0+/v+ff38f/z/b9v3t2gP9/3h/t/9L/z/9/f32bdrD//sJ/+/uvz/gL//v3f+Qz/9uP6d/1H/k9v96evX/D7f/tf3+bVf5H/A//n+/vX4zT//n1X+D6d+fv3n4/d6/N/+d1n+gX/A/4m+n/f/j/t/xJ+d/O/n/S4sCkiRJEgQAAAD+zP8BqGgP3lqUq2kAAAAASUVORK5CYII=');
+            background-size: cover;
+            background-position: center;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #004080;
+        }
+        
+        #menu-sidebar {
+            transition: transform 0.3s ease-in-out;
+            position: absolute; 
+            height: 100%;
+        }
+
+        /* Success Animation for Scheme Application */
+        .success-anim {
+            animation: slideUpFade 0.5s ease-out forwards;
+        }
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-frame" id="app-container">
+
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="bg-[#333333] text-white px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMenu()" class="text-white text-lg hover:text-gray-300 transition">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <span class="font-normal text-sm tracking-wide text-gray-200" data-i18n="topBarTitle">Common Registration ...</span>
+            </div>
+            <div class="flex items-center gap-5 text-lg text-white">
+                <i class="fa-regular fa-bell cursor-pointer"></i>
+                <i class="fa-solid fa-share-nodes cursor-pointer"></i>
+                <i class="fa-solid fa-magnifying-glass cursor-pointer"></i>
+            </div>
+        </div>
+
+        <div class="ministry-header">
+            <div class="ministry-info">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png" 
+                     class="h-10 w-auto object-contain" alt="National Emblem">
+                <div class="flex flex-col justify-center min-w-0">
+                    <h2 class="text-[10px] font-bold text-gray-800 leading-tight truncate">कृषि एवं किसान कल्याण मंत्रालय</h2>
+                    <p class="text-[7px] font-bold text-gray-500 mt-0.5 leading-none uppercase" data-i18n="ministryLabel">MINISTRY OF</p>
+                    <h2 class="text-[9px] font-bold text-gray-800 leading-tight uppercase truncate" data-i18n="deptName">AGRICULTURE & FARMERS WELFARE</h2>
+                </div>
+            </div>
+            
+            <div class="lang-btn-container relative">
+                 <button onclick="toggleLangDropdown()" class="flex items-center gap-1 bg-gray-100 border border-gray-200 px-2 py-1.5 rounded-md hover:bg-gray-200 transition">
+                    <i class="fa-solid fa-globe text-gray-600 text-sm"></i>
+                    <span class="text-[10px] font-bold text-gray-700">Language</span>
+                    <i class="fa-solid fa-chevron-down text-[8px] text-gray-500 ml-0.5"></i>
+                </button>
+                <div id="language-dropdown" class="absolute right-0 top-9 mt-1 w-40 bg-white border border-gray-200 rounded-lg shadow-xl hidden z-50">
+                    </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="menu-overlay" class="absolute inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="toggleMenu()"></div>
+    <div id="menu-sidebar" class="absolute top-0 left-0 w-64 bg-white shadow-2xl z-50 transform -translate-x-full">
+        <div class="p-6 header-gradient text-white">
+            <div class="flex justify-end mb-4">
+                <button onclick="toggleMenu()" class="text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="h-12 w-12 rounded-full farmer-avatar-data bg-white"></div>
+                <div>
+                    <h3 class="text-lg font-bold">Rajesh Kumar</h3>
+                    <p class="text-xs text-blue-100">AGRI-MP-123456</p>
+                </div>
+            </div>
+        </div>
+        <nav class="p-4 space-y-2 text-gray-700">
+            <a href="#" onclick="navigate('dashboard'); setDashboardTab('profile'); toggleMenu(); return false;" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100">
+                <i class="fa-solid fa-user-circle w-5"></i> <span data-i18n="menuProfile">My Profile</span>
+            </a>
+            <a href="#" onclick="navigate('dashboard'); setDashboardTab('schemes'); toggleMenu(); return false;" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100">
+                <i class="fa-solid fa-file-signature w-5"></i> <span data-i18n="menuSchemes">Apply Schemes</span>
+            </a>
+            <a href="#" onclick="navigate('dashboard'); setDashboardTab('status'); toggleMenu(); return false;" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100">
+                <i class="fa-solid fa-timeline w-5"></i> <span data-i18n="menuStatus">Application Status</span>
+            </a>
+            <a href="#" onclick="alertMessage('Helpline: 1551 (Toll-Free)', 'info'); toggleMenu(); return false;" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100">
+                <i class="fa-solid fa-phone-volume w-5"></i> <span data-i18n="menuHelpline">Helpline (1551)</span>
+            </a>
+            <div class="border-t border-gray-200 my-4"></div>
+            <button id="logout-menu-btn" onclick="logout()" class="w-full flex items-center gap-3 p-3 rounded-lg text-red-600 hover:bg-red-50 font-medium">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> <span data-i18n="menuLogout">Logout</span>
+            </button>
+        </nav>
+    </div>
+
+    <div id="message-box" class="absolute inset-x-0 top-0 z-[60] p-4 transform transition-transform duration-300 translate-y-[-100%]" style="display:none;">
+        <div class="max-w-md mx-auto p-4 rounded-lg shadow-lg flex items-center justify-between" id="message-content">
+            <p id="message-text" class="text-sm font-medium"></p>
+            <button onclick="closeAlert()" class="ml-4 text-lg"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+ 
+    <main class="relative flex-1 bg-gray-50 overflow-y-auto">
+        <section id="home-page" class="page active">
+            <div class="header-gradient text-white p-6 pb-20 rounded-b-3xl shadow-xl">
+                <h1 class="text-2xl font-bold mb-1" data-i18n="welcomeFarmer">Welcome Farmer</h1>
+                <p class="text-sm text-blue-200 mb-4" data-i18n="homeSubtext">Access 15+ Central & State Schemes with a Single Identity.</p>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-300"></i> <span data-i18n="feature1">One-time Registration (AgriStack)</span></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-300"></i> <span data-i18n="feature2">Auto-Eligibility Check</span></li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-circle-check text-green-300"></i> <span data-i18n="feature3">Direct Benefit Transfer (DBT)</span></li>
+                </ul>
+                <p class="text-xs mt-3 text-blue-100">v2.4.0 | <span data-i18n="poweredBy">Powered by NIC</span></p>
+            </div>
+
+            <div class="p-6 -mt-12 relative z-10 bg-white min-h-[500px] rounded-t-3xl"> 
+                <h2 class="text-xl font-bold text-gray-800 mb-4 pt-4" data-i18n="loginTitle">Login to Portal</h2>
+                <p class="text-sm text-gray-500 mb-4" data-i18n="loginSub">Enter your details to proceed</p>
+                
+                <div class="mb-6">
+                    <label for="farmer-id-input" class="block text-sm font-medium text-gray-700 mb-1" data-i18n="loginLabel">
+                        Farmer ID OR Aadhaar Number
+                    </label>
+                    <input type="text" id="farmer-id-input" data-i18n-placeholder="loginPlaceholder" placeholder="Ex: AGRI-1234 or 1234 5678" class="w-full border border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500 transition duration-150">
+                    <p class="text-xs text-gray-500 mt-2" data-i18n="loginNote">We automatically detect if you are entering an Aadhaar or Farmer ID.</p>
+                </div>
+
+                <button onclick="login()" class="w-full flex items-center justify-center gap-2 text-white bg-blue-600 hover:bg-blue-700 font-bold py-3 rounded-lg text-lg shadow-lg shadow-blue-600/30 transition duration-150">
+                    <span data-i18n="continueBtn">Continue</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div class="pt-8 space-y-4">
+                    <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider border-b pb-2" data-i18n="updatesTitle">Latest Updates</h3>
+                    <div class="bg-green-50 border border-green-200 p-4 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-seedling text-green-600 text-xl mt-1"></i>
+                        <div>
+                            <p class="font-bold text-green-800" data-i18n="update1Title">New Scheme Alert</p>
+                            <p class="text-sm text-green-700" data-i18n="update1Text">Apply for Solar Pump Subsidy (Kusum Yojana) before Dec 31st.</p>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl flex items-start gap-3">
+                        <i class="fa-solid fa-cloud-sun-rain text-blue-600 text-xl mt-1"></i>
+                        <div>
+                            <p class="font-bold text-blue-800" data-i18n="update2Title">Weather Advisory</p>
+                            <p class="text-sm text-blue-700" data-i18n="update2Text">Light showers expected in Vidisha region. Protect harvested crops.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-page" class="page">
+            <div class="header-gradient text-white p-4 pb-12 rounded-b-3xl shadow-xl dashboard-header-fixed">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold"><span data-i18n="welcomeUser">Welcome</span>, Rajesh!</h1>
+                        <p class="text-sm mt-1 text-blue-200">ID: AGRI-MP-123456</p>
+                    </div>
+                    <div class="h-16 w-16 rounded-full farmer-avatar-data border-2 border-white/50"></div>
+                </div>
+
+                <div class="dashboard-tabs">
+                    <button onclick="setDashboardTab('profile')" id="tab-profile" class="flex-1 text-center py-2 tab-active text-sm">
+                        <i class="fa-solid fa-user-circle mr-1"></i> <span data-i18n="tabProfile">My Profile</span>
+                    </button>
+                    <button onclick="setDashboardTab('schemes')" id="tab-schemes" class="flex-1 text-center py-2 tab-inactive text-sm">
+                         <i class="fa-solid fa-file-signature mr-1"></i> <span data-i18n="tabSchemes">Apply Schemes</span>
+                    </button>
+                    <button onclick="setDashboardTab('status')" id="tab-status" class="flex-1 text-center py-2 tab-inactive text-sm">
+                        <i class="fa-solid fa-timeline mr-1"></i> <span data-i18n="tabStatus">Status</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="px-4 pt-8 pb-4 bg-white rounded-t-3xl -mt-4 relative">
+                <div id="content-profile" class="dashboard-content space-y-6 min-h-[600px]">
+                    <div class="bg-white rounded-xl shadow-lg p-5 border border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-user-circle text-blue-600"></i> <span data-i18n="personalDetails">Personal Details</span>
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-user text-gray-500 w-5"></i>
+                                <div>
+                                    <p class="text-xs text-gray-500" data-i18n="labelName">Full Name</p>
+                                    <p class="font-medium text-gray-800">Rajesh Kumar</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                 <i class="fa-solid fa-phone text-gray-500 w-5"></i>
+                                <div>
+                                    <p class="text-xs text-gray-500" data-i18n="labelMobile">Mobile Number</p>
+                                    <p class="font-medium text-gray-800">+91 98765432XX</p>
+                                </div>
+                             </div>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-location-dot text-gray-500 w-5"></i>
+                                <div>
+                                    <p class="text-xs text-gray-500" data-i18n="labelLocation">Location</p>
+                                    <p class="font-medium text-gray-800">Vidisha, Madhya Pradesh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg p-5 border border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-tractor text-green-600"></i> <span data-i18n="farmDetails">Farm Details</span>
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-map-marked-alt text-gray-500 w-5"></i>
+                                <div>
+                                    <p class="text-xs text-gray-500" data-i18n="labelLand">Land Holding</p>
+                                    <p class="font-medium text-gray-800">2.5 Acres</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <i class="fa-solid fa-wheat-awn text-gray-500 w-5"></i>
+                                <div>
+                                    <p class="text-xs text-gray-500" data-i18n="labelCrops">Major Crops</p>
+                                    <p class="font-medium text-gray-800">Wheat, Soyabean</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="navigate('land-records')" class="mt-6 w-full flex items-center justify-center p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-150 font-bold">
+                            <span data-i18n="btnViewLand">View Land Records</span> <i class="fa-solid fa-chevron-right ml-2 text-sm"></i>
+                        </button>
+                    </div>
+                    <div class="h-12"></div>
+                </div>
+
+                <div id="content-schemes" class="dashboard-content hidden min-h-[500px]">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4" data-i18n="schemesTitle">Available Schemes for You</h2>
+                    <div id="scheme-pmfby" class="bg-white rounded-xl shadow-lg p-5 mb-5 border border-gray-100">
+                        <div class="flex items-center gap-4 mb-3">
+                             <i class="fa-solid fa-shield-halved text-green-600 text-3xl"></i>
+                            <h3 class="text-xl font-bold text-gray-800 leading-tight" data-i18n="scheme1Name">Pradhan Mantri Fasal Bima Yojana (PMFBY)</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3" data-i18n="scheme1Desc">Crop insurance scheme to provide financial support to farmers against crop loss.</p>
+                        <button onclick="applyForScheme('pmfby')" class="w-full text-white bg-green-600 hover:bg-green-700 apply-btn-hover font-medium rounded-lg text-sm px-5 py-3 transition duration-150">
+                            <span data-i18n="applyNow">Apply Now</span> <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                    <div id="scheme-pmkisan" class="bg-white rounded-xl shadow-lg p-5 mb-5 border border-gray-100">
+                        <div class="flex items-center gap-4 mb-3">
+                             <i class="fa-solid fa-leaf text-blue-600 text-3xl"></i>
+                            <h3 class="text-xl font-bold text-gray-800 leading-tight" data-i18n="scheme2Name">PM Kisan Samman Nidhi</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3" data-i18n="scheme2Desc">Income support of ₹6,000 per year in three equal installments.</p>
+                        <button onclick="applyForScheme('pmkisan')" class="w-full text-white bg-blue-700 hover:bg-blue-800 apply-btn-hover font-medium rounded-lg text-sm px-5 py-3 transition duration-150">
+                            <span data-i18n="applyNow">Apply Now</span> <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="content-status" class="dashboard-content min-h-[500px] hidden">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4" data-i18n="applicationsTitle">Your Applications</h2>
+                    
+                    <div class="bg-white rounded-xl shadow-lg p-4 mb-5 border-l-4 border-green-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold text-gray-800" data-i18n="scheme2Name">PM Kisan Samman Nidhi</h3>
+                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-check-circle"></i> <span data-i18n="statusApproved">Approved</span>
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-500">App ID: APP-KCC-2023-001 • Oct 25, 2023</p>
+                        <p class="mt-2 text-sm text-green-600"><i class="fa-solid fa-money-bill-transfer mr-1"></i> <span data-i18n="msgCredited">Installment credited to bank account.</span></p>
+                    </div>
+                   
+                    <div id="smam-card" class="bg-white rounded-xl shadow-lg p-4 mb-5 border-l-4 border-red-500">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold text-gray-800">Sub-Mission on Agricultural Mechanization (SMAM)</h3>
+                            <span id="smam-status-badge" class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="statusAction">Action Required</span>
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-500">App ID: APP-SMAM-2024-112 • Jan 05, 2024</p>
+                        <div id="smam-message-box" class="mt-3 bg-red-50 p-3 rounded-lg border border-red-200">
+                            <p class="text-sm text-red-700 font-medium">
+                                 <i class="fa-solid fa-upload mr-1"></i> <span data-i18n="msgUpload">Please upload updated land document.</span>
+                            </p>
+                        </div>
+                        <button onclick="openSMAMActionModal()" class="mt-4 w-full text-white bg-red-600 hover:bg-red-700 font-bold py-3 rounded-lg text-sm shadow-lg shadow-red-600/30 transition duration-150">
+                            <span data-i18n="btnAction">Take Action</span> <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="land-records-page" class="page">
+            <div class="header-gradient text-white px-4 pt-4 pb-12 rounded-b-[2rem] shadow-lg relative z-0">
+                <button onclick="navigate('dashboard')" class="text-white text-lg cursor-pointer hover:bg-white/20 p-2 rounded-full transition absolute top-4 left-4">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="pt-8 px-4">
+                    <h1 class="text-2xl font-bold" data-i18n="landRecordsTitle">Land Records (Bhulekh)</h1>
+                    <div class="flex items-center gap-2 bg-white/10 w-fit px-3 py-1 rounded-full text-xs mt-2 backdrop-blur-sm border border-white/20">
+                        <i class="fa-solid fa-shield-halved text-green-300"></i>
+                        <span data-i18n="verifiedBy">Verified by DILRMP</span>
+                    </div>
+                    <p class="text-blue-100 text-sm mt-1" data-i18n="landSubtext">View your linked lands or add new parcels.</p>
+                </div>
+            </div>
+            
+            <div class="px-4 -mt-8 relative z-10">
+                <div class="flex justify-between items-end mb-2 px-1">
+                    <h2 class="text-sm font-bold text-gray-800 uppercase tracking-wider" data-i18n="linkedParcels">Linked Parcels (1)</h2>
+                    <span class="text-xs text-blue-600 font-medium" data-i18n="syncedId">Synced via Farmer ID</span>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-green-500 mb-6 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-3 relative">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800"><span data-i18n="surveyNo">Survey No.</span> 124/2</h3>
+                            <p class="text-xs text-gray-500">Vill. Rampur, Vidisha, MP</p>
+                        </div>
+                        <div class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
+                            <i class="fa-solid fa-check-circle"></i> <span data-i18n="seeded">Seeded</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-y-3 gap-x-2 text-sm mb-4 relative">
+                        <div>
+                            <span class="block text-xs text-gray-400" data-i18n="labelArea">Area</span>
+                            <span class="font-medium text-gray-700">2.50 Acres</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-gray-400" data-i18n="labelOwner">Owner Name</span>
+                            <div class="flex flex-col">
+                                <span class="font-medium text-gray-700 leading-tight">Rajesh Kumar</span>
+                             </div>
+                        </div>
+                    </div>
+                    <button onclick="openRoRModal('124/2', '2.50 Acres')" class="mt-3 w-full border border-blue-600 text-blue-600 font-medium py-2 rounded-lg text-sm hover:bg-blue-50 transition">
+                        <i class="fa-solid fa-eye mr-1"></i> <span data-i18n="viewRoR">View Record of Rights (RoR)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-t-3xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pt-6 pb-10 px-4 min-h-[500px]">
+                <h2 class="text-lg font-bold text-gray-800 mb-4" data-i18n="linkMoreTitle">Link More Land Parcels</h2>
+                <div class="flex border-b border-gray-200 mb-6">
+                    <button onclick="setLandLinkTab('location')" id="land-tab-location" class="flex-1 pb-3 text-sm font-medium land-tab-active transition-colors flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-map-location-dot text-lg"></i> <span data-i18n="tabLocation">Location</span>
+                    </button>
+                    <button onclick="setLandLinkTab('ulpin')" id="land-tab-ulpin" class="flex-1 pb-3 text-sm font-medium land-tab-inactive transition-colors flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-fingerprint text-lg"></i> ULPIN
+                    </button>
+                    <button onclick="setLandLinkTab('geo')" id="land-tab-geo" class="flex-1 pb-3 text-sm font-medium land-tab-inactive transition-colors flex flex-col items-center gap-1">
+                        <i class="fa-solid fa-crosshairs text-lg"></i> <span data-i18n="tabGeo">Geo-Locate</span>
+                    </button>
+                </div>
+
+                <div id="land-content-location" class="land-content space-y-4">
+                    <div class="relative">
+                        <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block" data-i18n="inputState">State</label>
+                        <select class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 appearance-none">
+                            <option selected>Madhya Pradesh (MP)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-9 text-gray-400 text-xs"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="relative">
+                            <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block" data-i18n="inputDistrict">District</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-3 appearance-none">
+                                <option>Vidisha</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-4 top-9 text-gray-400 text-xs"></i>
+                        </div>
+                        <div class="relative">
+                            <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block" data-i18n="inputTehsil">Tehsil</label>
+                            <select class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-3 appearance-none">
+                                <option>Vidisha Rural</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down absolute right-4 top-9 text-gray-400 text-xs"></i>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block" data-i18n="inputVillage">Village</label>
+                        <select class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg p-3 appearance-none">
+                            <option>Rampur</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-4 top-9 text-gray-400 text-xs"></i>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block" data-i18n="inputSearchBy">Search By</label>
+                        <input type="text" id="khasra-input" data-i18n-placeholder="placeholderKhasra" placeholder="Enter Khasra Number (e.g., 14/2)" class="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block p-3">
+                    </div>
+                    
+                    <button onclick="simulateLandSearch('location', true)" class="w-full text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3 shadow-lg shadow-green-600/30">
+                        <span data-i18n="btnSearchLink">Search & Link Record</span>
+                    </button>
+                    <div class="text-center">
+                        <button onclick="simulateLandSearch('location', false)" class="text-xs text-red-500 underline hover:text-red-700">Simulate "Not Found" Error</button>
+                    </div>
+                </div>
+
+                <div id="land-content-ulpin" class="land-content hidden space-y-6">
+                    <div class="text-center p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <i class="fa-solid fa-id-card text-3xl text-blue-500 mb-2"></i>
+                        <p class="text-sm text-gray-600" data-i18n="ulpinHelp">Enter the 14-digit Unique Land Parcel ID found on your property card or use QR.</p>
+                    </div>
+                    
+                    <div id="ulpin-scanner-ui" class="relative h-40 bg-gray-900 rounded-lg overflow-hidden flex items-center justify-center hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fa-solid fa-qrcode text-gray-700 text-8xl opacity-20"></i>
+                        </div>
+                        <div class="relative w-40 h-40 border-2 border-white/50 rounded-lg z-10">
+                            <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-green-400"></div>
+                            <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-green-400"></div>
+                            <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-green-400"></div>
+                            <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-green-400"></div>
+                            <div class="scan-laser" style="animation-duration: 3s;"></div>
+                        </div>
+                        <p class="absolute bottom-2 text-white/80 text-xs z-20 bg-black/50 px-2 rounded">Align QR Code within frame</p>
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-500 font-bold ml-1 mb-1 block">Bhu-Aadhar / ULPIN</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="ulpin-input" placeholder="XXXX-XXXX-XXXX-XX" class="flex-1 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 tracking-widest uppercase transition-all duration-300">
+                            <button onclick="startScanner()" class="bg-gray-800 hover:bg-gray-700 text-white p-3 rounded-lg w-14 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-qrcode text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="simulateLandSearch('ulpin', true)" class="w-full text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3 shadow-lg shadow-green-600/30">
+                        <span data-i18n="btnVerifyLink">Verify ULPIN & Link</span>
+                    </button>
+                </div>
+
+                <div id="land-content-geo" class="land-content hidden space-y-6">
+                    <div class="text-center py-8">
+                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fa-solid fa-satellite-dish text-3xl text-blue-600"></i>
+                        </div>
+                        <h3 class="text-gray-800 font-bold" data-i18n="geoTitle">Standing on your field?</h3>
+                        <p class="text-sm text-gray-500 mt-2 px-8" data-i18n="geoSub">We will verify your GPS location against the Digital Cadastral Map.</p>
+                        <button onclick="simulateLandSearch('geo', 'pending')" class="mt-6 w-full text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-3 shadow-lg shadow-green-600/30 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-location-crosshairs"></i> <span data-i18n="btnDetect">Detect & Submit for Verification</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="land-search-result-found" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-8 w-1 bg-green-500 rounded-full"></div>
+                        <h3 class="font-bold text-gray-800" data-i18n="recordFound">Record Found</h3>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm relative overflow-hidden">
+                        <div class="flex justify-between">
+                            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">Private Land</span>
+                            <span class="text-xs text-orange-600 font-bold bg-orange-100 px-2 py-1 rounded" data-i18n="notLinked">Not Linked</span>
+                        </div>
+                        <h4 class="font-bold text-lg mt-2">Khasra No. 112/4</h4>
+                        <p class="text-sm text-gray-600">Owner: Ram Prasad</p>
+                        <p class="text-xs text-gray-500 mt-1">Area: 1.2 Acres • Rainfed</p>
+                        <button onclick="linkLandToProfile('112/4')" class="mt-3 w-full border border-blue-600 text-white bg-blue-600 hover:bg-blue-700 font-medium py-2 rounded-lg text-sm transition" data-i18n="btnLinkProfile">Link to Profile</button>
+                    </div>
+                </div>
+                
+                <div id="land-search-result-linked" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-blue-100 p-2 rounded-full"><i class="fa-solid fa-link text-blue-500"></i></div>
+                            <div>
+                                <h3 class="font-bold text-gray-800" data-i18n="linkedSuccess">Land Linked Successfully!</h3>
+                                <p class="text-xs text-gray-600 mt-1">Khasra No. <span id="linked-khasra-display"></span> is now associated with your ID.</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs bg-white p-3 rounded border border-blue-100 text-gray-700">
+                            <p class="mb-1 text-orange-600 font-bold" data-i18n="actionRequired">Action Required:</p>
+                            <p data-i18n="verifyPendingText">Verification is **Pending Officer Confirmation**.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="land-search-result-error" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
+                        <i class="fa-solid fa-circle-exclamation text-red-500 text-3xl mb-2"></i>
+                        <h3 class="font-bold text-red-800 mb-1" data-i18n="recordNotFound">Record Not Found</h3>
+                        <p class="text-xs text-red-600 mb-3" data-i18n="noMatch">We could not match the entered details.</p>
+                        <div class="bg-white p-3 rounded border border-red-100 text-left">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold mb-1" data-i18n="actionRequired">Action Required:</p>
+                            <p class="text-xs text-gray-700" data-i18n="verifyInput">Please verify the input or visit the <strong>Patwari Office</strong> with your physical passbook to update the records.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="land-search-result-pending" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 shadow-sm">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-orange-100 p-2 rounded-full">
+                                <i class="fa-solid fa-clock text-orange-500"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-800" data-i18n="verifyPending">Verification Pending (GPS)</h3>
+                                <p class="text-xs text-gray-600 mt-1">Survey No. 99/1 detected via GPS.</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-xs bg-white p-3 rounded border border-orange-100 text-gray-700">
+                            <p class="mb-2"><strong data-i18n="statusLabel">Status:</strong> Waiting for Officer Confirmation</p>
+                            <p>Your claim has been sent to the Revenue Officer. Verification usually takes 3-5 working days.</p>
+                        </div>
+                        <button class="mt-3 w-full bg-gray-200 text-gray-500 font-medium py-2 rounded-lg text-sm cursor-not-allowed">
+                            Link Pending...
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- UPDATED SMAM ACTION MODAL WITH UPLOAD OPTION -->
+<div id="smam-action-modal" class="modal-overlay hidden" onclick="closeModal('smam-action-modal')">
+    <div class="modal-content p-6" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center border-b pb-3 mb-4">
+            <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-red-500"></i> Action Required
+            </h3>
+            <button onclick="closeModal('smam-action-modal')" class="text-gray-500 hover:text-gray-800 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <p class="text-sm text-gray-600 mb-5">To process your SMAM application, please provide proof of land ownership.</p>
+
+        <!-- Option 1: Link Profile Data (Fastest) -->
+        <div class="mb-2">
+            <button onclick="autoFetchDocuments('smam')" class="w-full bg-blue-50 border border-blue-200 text-blue-700 font-bold py-3 rounded-lg text-sm hover:bg-blue-100 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-link"></i> Link Verified Profile Data
+            </button>
+            <p class="text-[10px] text-center text-green-600 font-bold mt-1"><i class="fa-solid fa-bolt"></i> Recommended (Instant Verification)</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="relative flex py-3 items-center">
+            <div class="flex-grow border-t border-gray-300"></div>
+            <span class="flex-shrink-0 mx-4 text-gray-400 text-xs font-bold">OR</span>
+            <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <!-- Option 2: Upload Document -->
+        <div>
+            <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Upload Document (PDF/JPG)</label>
+            <div class="flex gap-2">
+                <input type="file" id="smam-file-upload" class="block w-full text-xs text-gray-500
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-lg file:border-0
+                    file:text-xs file:font-semibold
+                    file:bg-gray-100 file:text-gray-700
+                    hover:file:bg-gray-200
+                "/>
+            </div>
+            <button onclick="handleManualUpload('smam')" class="mt-3 w-full bg-gray-800 text-white font-bold py-3 rounded-lg text-sm hover:bg-gray-700 transition shadow-lg">
+                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload & Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="ror-details-modal" class="modal-overlay hidden" onclick="closeModal('ror-details-modal')">
+    <div class="modal-content p-6" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center border-b pb-3 mb-4">
+            <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+                <i class="fa-solid fa-book-atlas"></i> Record of Rights (RoR)
+            </h3>
+            <button onclick="closeModal('ror-details-modal')" class="text-gray-500 hover:text-gray-800 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                <p class="text-sm font-bold text-green-800"><span data-i18n="surveyNo">Survey No</span>: <span id="ror-survey-no"></span></p>
+                <p class="text-xs text-gray-700"><span data-i18n="labelArea">Area</span>: <span id="ror-area"></span></p>
+            </div>
+            <button onclick="closeModal('ror-details-modal'); alertMessage('Downloading verified RoR PDF...', 'success');" class="w-full bg-green-600 text-white font-bold py-3 rounded-lg text-sm hover:bg-green-700 transition mt-6">
+                <i class="fa-solid fa-download mr-1"></i> Confirm Download PDF
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let isAuthenticated = false;
+    let currentPage = 'home';
+    const LANGUAGES = {
+        'en': 'English', 'hi': 'हिंदी (Hindi)', 'ml': 'മലയാളം (Malayalam)',
+        'te': 'തെലുഗു (Telugu)', 'ta': 'தமிழ் (Tamil)', 'bn': 'Bengali',
+    };
+    
+    // Translation Dictionary
+    const translations = {
+        'en': {
+            topBarTitle: "Common Registration ...", ministryLabel: "MINISTRY OF", deptName: "AGRICULTURE AND\nFARMERS WELFARE",
+            welcomeFarmer: "Welcome Farmer", homeSubtext: "Access 15+ Central & State Schemes with a Single Identity.",
+            feature1: "One-time Registration (AgriStack)", feature2: "Auto-Eligibility Check", feature3: "Direct Benefit Transfer (DBT)",
+            poweredBy: "Powered by NIC", loginTitle: "Login to Portal", loginSub: "Enter your details to proceed",
+            loginLabel: "Farmer ID OR Aadhaar Number", loginPlaceholder: "Ex: AGRI-1234 or 1234 5678",
+            loginNote: "We automatically detect if you are entering an Aadhaar or Farmer ID.",
+            continueBtn: "Continue", updatesTitle: "Latest Updates", update1Title: "New Scheme Alert",
+            update1Text: "Apply for Solar Pump Subsidy (Kusum Yojana) before Dec 31st.",
+            update2Title: "Weather Advisory", update2Text: "Light showers expected in Vidisha region. Protect harvested crops.",
+            menuProfile: "My Profile", menuSchemes: "Apply Schemes", menuStatus: "Application Status", menuHelpline: "Helpline (1551)", menuLogout: "Logout",
+            welcomeUser: "Welcome", tabProfile: "My Profile", tabSchemes: "Apply Schemes", tabStatus: "Status",
+            personalDetails: "Personal Details", labelName: "Full Name", labelMobile: "Mobile Number", labelLocation: "Location",
+            farmDetails: "Farm Details", labelLand: "Land Holding", labelCrops: "Major Crops", btnViewLand: "View Land Records",
+            schemesTitle: "Available Schemes for You", scheme1Name: "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+            scheme1Desc: "Crop insurance scheme to provide financial support to farmers against crop loss.",
+            scheme2Name: "PM Kisan Samman Nidhi", scheme2Desc: "Income support of ₹6,000 per year in three equal installments.",
+            applyNow: "Apply Now", applicationsTitle: "Your Applications", statusApproved: "Approved",
+            msgCredited: "Installment credited to bank account. Ref:", statusAction: "Action Required",
+            msgUpload: "Please upload updated land document.", btnAction: "Take Action",
+            landRecordsTitle: "Land Records (Bhulekh)", verifiedBy: "Verified by DILRMP",
+            landSubtext: "View your linked lands or add new parcels.", linkedParcels: "Linked Parcels",
+            syncedId: "Synced via Farmer ID", surveyNo: "Survey No.", seeded: "Seeded", labelArea: "Area", labelOwner: "Owner Name",
+            viewRoR: "View Record of Rights (RoR)", linkMoreTitle: "Link More Land Parcels",
+            tabLocation: "Location", tabGeo: "Geo-Locate", inputState: "State", inputDistrict: "District",
+            inputTehsil: "Tehsil", inputVillage: "Village", inputSearchBy: "Search By",
+            placeholderKhasra: "Enter Khasra Number (e.g., 14/2)", btnSearchLink: "Search & Link Record",
+            ulpinHelp: "Enter the 14-digit Unique Land Parcel ID found on your property card or use QR.",
+            btnVerifyLink: "Verify ULPIN & Link", geoTitle: "Standing on your field?",
+            geoSub: "We will verify your GPS location against the Digital Cadastral Map.",
+            btnDetect: "Detect & Submit for Verification", recordFound: "Record Found", notLinked: "Not Linked",
+            btnLinkProfile: "Link to Profile", linkedSuccess: "Land Linked Successfully!",
+            actionRequired: "Action Required:", verifyPendingText: "Verification is **Pending Officer Confirmation**.",
+            recordNotFound: "Record Not Found", noMatch: "We could not match the entered details.",
+            verifyInput: "Please verify the input or visit the Patwari Office with your physical passbook to update the records.", 
+            verifyPending: "Verification Pending (GPS)", statusLabel: "Status:"
+        },
+        'ml': {
+            topBarTitle: "പൊതു രജിസ്ട്രേഷൻ പോർട്ടൽ", ministryLabel: "മന്ത്രാലയം", deptName: "കൃഷി, കർഷക\nക്ഷേമ വകുപ്പ്",
+            welcomeFarmer: "കർഷകർക്ക് സ്വാഗതം", homeSubtext: "ഒരൊറ്റ ഐഡന്റിറ്റി ഉപയോഗിച്ച് 15+ കേന്ദ്ര, സംസ്ഥാന പദ്ധതികൾ ആക്സസ് ചെയ്യുക.",
+            feature1: "ഒറ്റത്തവണ രജിസ്ട്രേഷൻ (AgriStack)", feature2: "സ്വയമേവയുള്ള യോഗ്യതാ പരിശോധന", feature3: "നേരിട്ടുള്ള ആനുകൂല്യ കൈമാറ്റം (DBT)",
+            poweredBy: "NIC ആണ് നൽകുന്നത്", loginTitle: "ലോഗിൻ ചെയ്യുക", loginSub: "തുടരാൻ നിങ്ങളുടെ വിവരങ്ങൾ നൽകുക",
+            loginLabel: "കർഷക ഐഡി അല്ലെങ്കിൽ ആധാർ നമ്പർ", loginPlaceholder: "ഉദാ: AGRI-1234",
+            loginNote: "നിങ്ങൾ നൽകുന്നത് ആധാർ ആണോ കർഷക ഐഡി ആണോ എന്ന് ഞങ്ങൾ സ്വയം തിരിച്ചറിയുന്നു.",
+            continueBtn: "തുടരുക", updatesTitle: "ഏറ്റവും പുതിയ അറിയിപ്പുകൾ", update1Title: "പുതിയ പദ്ധതി അറിയിപ്പ്",
+            update1Text: "ഡിസംബർ 31-ന് മുമ്പ് സോളാർ പമ്പ് സബ്സിഡിക്ക് അപേക്ഷിക്കുക.",
+            update2Title: "കാലാവസ്ഥാ അറിയിപ്പ്", update2Text: "വിദിഷ മേഖലയിൽ നേരിയ മഴയ്ക്ക് സാധ്യത. വിളകൾ സംരക്ഷിക്കുക.",
+            menuProfile: "എന്റെ പ്രൊഫൈൽ", menuSchemes: "പദ്ധതികൾ", menuStatus: "അപേക്ഷാ നില", menuHelpline: "ഹെൽപ്പ്ലൈൻ (1551)", menuLogout: "പുറത്തുകടക്കുക",
+            welcomeUser: "സ്വാഗതം", tabProfile: "പ്രൊഫൈൽ", tabSchemes: "പദ്ധതികൾ", tabStatus: "നില",
+            personalDetails: "വ്യക്തിഗത വിവരങ്ങൾ", labelName: "പൂർണ്ണ പേര്", labelMobile: "മൊബൈൽ നമ്പർ", labelLocation: "സ്ഥലം",
+            farmDetails: "കൃഷി വിവരങ്ങൾ", labelLand: "ഭൂമി വിസ്തൃതി", labelCrops: "പ്രധാന വിളകൾ", btnViewLand: "ഭൂരേഖകൾ കാണുക",
+            schemesTitle: "ലഭ്യമായ പദ്ധതികൾ", scheme1Name: "പ്രധാനമന്ത്രി ഫസൽ ബീമാ യോജന",
+            scheme1Desc: "വിളനാശത്തിനെതിരെ കർഷകർക്ക് സാമ്പത്തിക സഹായം നൽകുന്നതിനുള്ള വിള ഇൻഷുറൻസ് പദ്ധതി.",
+            scheme2Name: "പിഎം കിസാൻ സമ്മാൻ നിധി", scheme2Desc: "പ്രതിവർഷം 6,000 രൂപ മൂന്ന് ഗഡുക്കളായി നൽകുന്നു.",
+            applyNow: "അപേക്ഷിക്കുക", applicationsTitle: "നിങ്ങളുടെ അപേക്ഷകൾ", statusApproved: "അംഗീകരിച്ചു",
+            msgCredited: "തുക ബാങ്ക് അക്കൗണ്ടിൽ ലഭിച്ചു.", statusAction: "ശ്രദ്ധിക്കുക",
+            msgUpload: "ദയവായി പുതിയ ഭൂരേഖ അപ്‌ലോഡ് ചെയ്യുക.", btnAction: "തുടർനടപടി",
+            landRecordsTitle: "ഭൂരേഖകൾ (ഭൂലേഖ്)", verifiedBy: "DILRMP പരിശോധിച്ചു",
+            landSubtext: "ലിങ്ക് ചെയ്ത ഭൂമി കാണുക അല്ലെങ്കിൽ പുതിയവ ചേർക്കുക.", linkedParcels: "ലിങ്ക് ചെയ്ത ഭൂമി",
+            syncedId: "കർഷക ഐഡി വഴി ലഭിച്ചത്", surveyNo: "സർവേ നമ്പർ", seeded: "സീഡ് ചെയ്തു", labelArea: "വിസ്തീർണ്ണം", labelOwner: "ഉടമയുടെ പേര്",
+            viewRoR: "റിക്കോർഡ് ഓഫ് റൈറ്റ്സ് (RoR) കാണുക", linkMoreTitle: "കൂടുതൽ ഭൂമി ലിങ്ക് ചെയ്യുക",
+            tabLocation: "സ്ഥലം", tabGeo: "ജിയോ-ലൊക്കേറ്റ്", inputState: "സംസ്ഥാനം", inputDistrict: "ജില്ല",
+            inputTehsil: "താലൂക്ക്", inputVillage: "വില്ലേജ്", inputSearchBy: "തിരയുക",
+            placeholderKhasra: "ഖസറ നമ്പർ നൽകുക", btnSearchLink: "തിരയുക & ലിങ്ക് ചെയ്യുക",
+            ulpinHelp: "പ്രോപ്പർട്ടി കാർഡിലുള്ള 14 അക്ക ULPIN നൽകുക.",
+            btnVerifyLink: "പരിശോധിച്ച് ലിങ്ക് ചെയ്യുക", geoTitle: "നിങ്ങൾ കൃഷിയിടത്തിലാണോ?",
+            geoSub: "നിങ്ങളുടെ GPS സ്ഥാനം ഡിജിറ്റൽ മാപ്പുമായി ഞങ്ങൾ പരിശോധിക്കും.",
+            btnDetect: "കണ്ടെത്തി പരിശോധനയ്ക്ക് അയക്കുക", recordFound: "രേഖ കണ്ടെത്തി", notLinked: "ലിങ്ക് ചെയ്തിട്ടില്ല",
+            btnLinkProfile: "പ്രൊഫൈലുമായി ലിങ്ക് ചെയ്യുക", linkedSuccess: "ഭൂമി വിജയകരമായി ലിങ്ക് ചെയ്തു!",
+            actionRequired: "ആവശ്യമായ നടപടി:", verifyPendingText: "ഉദ്യോഗസ്ഥൻ പരിശോധിച്ച ശേഷം മാത്രമേ ഇത് പൂർണ്ണമായും അംഗീകരിക്കപ്പെടൂ.",
+            recordNotFound: "രേഖ കണ്ടെത്തിയില്ല", noMatch: "നൽകിയ വിവരങ്ങൾ പൊരുത്തപ്പെടുന്നില്ല.",
+            verifyInput: "വിവരങ്ങൾ പരിശോധിക്കുക.", verifyPending: "പരിശോധന ബാക്കിയുണ്ട് (GPS)", statusLabel: "നില:"
+        },
+        'ta': {
+            topBarTitle: "பொது பதிவு தளம்", ministryLabel: "அமைச்சகம்", deptName: "வேளாண்மை மற்றும்\nஉழவர் நலத்துறை",
+            welcomeFarmer: "விவசாயி வருக", homeSubtext: "ஒரே அடையாளத்துடன் 15+ மத்திய மற்றும் மாநில திட்டங்களை அணுகவும்.",
+            feature1: "ஒரு முறை பதிவு (AgriStack)", feature2: "தானியங்கி தகுதி சோதனை", feature3: "நேரடி மானிய பரிமாற்றம் (DBT)",
+            poweredBy: "NIC வழங்குகிறது", loginTitle: "உள்நுழையவும்", loginSub: "தொடர உங்கள் விவரங்களை உள்ளிடவும்",
+            loginLabel: "விவசாயி ஐடி அல்லது ஆதார் எண்", loginPlaceholder: "எ.கா: AGRI-1234",
+            loginNote: "நீங்கள் ஆதார் அல்லது விவசாயி ஐடியை உள்ளிடுகிறீர்களா என்பதை நாங்கள் தானாகவே கண்டறிகிறோம்.",
+            continueBtn: "தொடரவும்", updatesTitle: "சமீபத்திய அறிவிப்புகள்", update1Title: "புதிய திட்ட அறிவிப்பு",
+            update1Text: "டிசம்பர் 31-க்குள் சோலார் பம்ப் மானியத்திற்கு விண்ணப்பிக்கவும்.",
+            update2Title: "வானிலை ஆலோசனை", update2Text: "விதிஷா பகுதியில் லேசான மழை பெய்ய வாய்ப்புள்ளது.",
+            menuProfile: "என் சுயவிவரம்", menuSchemes: "திட்டங்கள்", menuStatus: "விண்ணப்ப நிலை", menuHelpline: "உதவி எண் (1551)", menuLogout: "வெளியேறு",
+            welcomeUser: "வருக", tabProfile: "சுயவிவரம்", tabSchemes: "திட்டங்கள்", tabStatus: "நிலை",
+            personalDetails: "தனிப்பட்ட விவரங்கள்", labelName: "முழு பெயர்", labelMobile: "மொபைல் எண்", labelLocation: "இடம்",
+            farmDetails: "பண்ணை விவரங்கள்", labelLand: "நிலம்", labelCrops: "முக்கிய பயிர்கள்", btnViewLand: "நில ஆவணங்களைப் பார்க்கவும்",
+            schemesTitle: "கிடைக்கும் திட்டங்கள்", scheme1Name: "பிரதம மந்திரி பயிர் காப்பீட்டுத் திட்டம்",
+            scheme1Desc: "பயிர் இழப்புக்கு எதிராக விவசாயிகளுக்கு நிதியுதவி வழங்கும் பயிர் காப்பீட்டுத் திட்டம்.",
+            scheme2Name: "பிஎம் கிசான் சம்மான் நிதி", scheme2Desc: "ஆண்டுக்கு ₹6,000 மூன்று சம தவணைகளில் வழங்கப்படுகிறது.",
+            applyNow: "விண்ணப்பிக்கவும்", applicationsTitle: "உங்கள் விண்ணப்பங்கள்", statusApproved: "ஏற்கப்பட்டது",
+            msgCredited: "தொகை வங்கி கணக்கில் வரவு வைக்கப்பட்டது.", statusAction: "நடவடிக்கை தேவை",
+            msgUpload: "தயவுசெய்து புதுப்பிக்கப்பட்ட நில ஆவணத்தை பதிவேற்றவும்.", btnAction: "நடவடிக்கை எடு",
+            landRecordsTitle: "நில ஆவணங்கள் (பூலேக்)", verifiedBy: "DILRMP சரிபார்க்கப்பட்டது",
+            landSubtext: "இணைக்கப்பட்ட நிலங்களைப் பார்க்கவும் அல்லது புதியவற்றைச் சேர்க்கவும்.", linkedParcels: "இணைக்கப்பட்ட நிலம்",
+            syncedId: "விவசாயி ஐடி மூலம்", surveyNo: "சர்வே எண்", seeded: "இணைக்கப்பட்டது", labelArea: "பரப்பளவு", labelOwner: "உரிமையாளர் பெயர்",
+            viewRoR: "உரிமை ஆவணத்தைப் பார்க்கவும்", linkMoreTitle: "மேலும் நிலங்களை இணைக்கவும்",
+            tabLocation: "இடம்", tabGeo: "ஜியோ-லൊகேட்", inputState: "மாநிலம்", inputDistrict: "மாவட்டம்",
+            inputTehsil: "வட்டம்", inputVillage: "கிராமம்", inputSearchBy: "தேடு",
+            placeholderKhasra: "கஸ்ரா எண்ணை உள்ளிடவும்", btnSearchLink: "தேடி இணைக்கவும்",
+            ulpinHelp: "உங்கள் சொத்து அட்டையில் உள்ள 14 இலக்க ULPIN ஐ உள்ளிடவும்.",
+            btnVerifyLink: "சரிபார்த்து இணைக்கவும்", geoTitle: "உங்கள் வயலில் இருக்கிறீர்களா?",
+            geoSub: "உங்கள் ஜிபிஎஸ் இருப்பிடத்தை டிஜிட்டல் வரைபடத்துடன் சரிபார்ப்போம்.",
+            btnDetect: "கண்டறிந்து சமர்ப்பிக்கவும்", recordFound: "பதிவு கிடைத்தது", notLinked: "இணைக்கப்படவில்லை",
+            btnLinkProfile: "சுயவிவரத்துடன் இணைக்கவும்", linkedSuccess: "நிலம் வெற்றிகரமாக இணைக்கப்பட்டது!",
+            actionRequired: "நடவடிக்கை தேவை:", verifyPendingText: "அதிகாரி உறுதிப்படுத்திய பின்னரே இது முழுமையாக இணைக்கப்படும்.",
+            recordNotFound: "பதிவு கிடைக்கவில்லை", noMatch: "உள்ளிட்ட விவரங்கள் பொருந்தவில்லை.",
+            verifyInput: "உள்ளீட்டைச் சரிபார்க்கவும்.", verifyPending: "சரிபார்ப்பு நிலுவையில் (GPS)", statusLabel: "நிலை:"
+        }
+    };
+
+    let currentLangCode = 'en';
+
+    function updateLanguageDropdown() {
+        const dropdown = document.getElementById('language-dropdown');
+        dropdown.innerHTML = '';
+        
+        for (const code in LANGUAGES) {
+            const item = document.createElement('a');
+            item.href = '#';
+            item.textContent = LANGUAGES[code];
+            item.className = 'block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 cursor-pointer';
+            if (code === currentLangCode) item.classList.add('bg-gray-100', 'font-bold');
+            item.onclick = (e) => {
+                e.preventDefault();
+                setLanguage(code);
+            };
+            dropdown.appendChild(item);
+        }
+    }
+
+    function toggleLangDropdown() {
+        const dropdown = document.getElementById('language-dropdown');
+        dropdown.classList.toggle('hidden');
+    }
+
+    function setLanguage(code) {
+        currentLangCode = code;
+        updateLanguageDropdown();
+        
+        const langData = translations[code] || translations['en'];
+
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (langData[key]) {
+                if (langData[key].includes('\n')) el.innerHTML = langData[key].replace(/\n/g, '<br>');
+                else el.innerText = langData[key];
+            }
+        });
+        
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            if (langData[key]) el.placeholder = langData[key];
+        });
+
+        const body = document.body;
+        if(code === 'ml') body.style.fontFamily = "'Noto Sans Malayalam', sans-serif";
+        else if(code === 'ta') body.style.fontFamily = "'Noto Sans Tamil', sans-serif";
+        else if(code === 'te') body.style.fontFamily = "'Noto Sans Telugu', sans-serif";
+        else if(code === 'bn') body.style.fontFamily = "'Noto Sans Bengali', sans-serif";
+        else if(code === 'hi') body.style.fontFamily = "'Noto Sans Devanagari', sans-serif";
+        else body.style.fontFamily = "'Noto Sans', sans-serif";
+
+        document.getElementById('language-dropdown').classList.add('hidden');
+    }
+
+    function navigate(pageId) {
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(page => {
+            page.classList.remove('active');
+            page.style.display = 'none';
+        });
+        const targetPage = document.getElementById(`${pageId}-page`);
+        if (targetPage) {
+            targetPage.style.display = 'block';
+            setTimeout(() => targetPage.classList.add('active'), 10);
+            currentPage = pageId;
+            document.getElementById('app-container').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    function toggleMenu() {
+        const sidebar = document.getElementById('menu-sidebar');
+        const overlay = document.getElementById('menu-overlay');
+        const isHidden = sidebar.classList.contains('-translate-x-full');
+        if (isHidden) {
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+        } else {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+    }
+
+    function alertMessage(message, type = 'info') {
+        const box = document.getElementById('message-box');
+        const content = document.getElementById('message-content');
+        const text = document.getElementById('message-text');
+        text.textContent = message;
+        
+        if (type === 'success') content.className = 'max-w-md mx-auto p-4 rounded-lg shadow-lg flex items-center justify-between bg-green-500 text-white';
+        else if (type === 'error') content.className = 'max-w-md mx-auto p-4 rounded-lg shadow-lg flex items-center justify-between bg-red-500 text-white';
+        else content.className = 'max-w-md mx-auto p-4 rounded-lg shadow-lg flex items-center justify-between bg-blue-500 text-white';
+        
+        box.style.display = 'block';
+        setTimeout(() => {
+            box.classList.remove('translate-y-[-100%]');
+            box.classList.add('translate-y-0');
+        }, 10);
+        setTimeout(closeAlert, 3000);
+    }
+
+    function closeAlert() {
+        const box = document.getElementById('message-box');
+        box.classList.remove('translate-y-0');
+        box.classList.add('translate-y-[-100%]');
+        setTimeout(() => box.style.display = 'none', 300);
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.remove('hidden');
+        setTimeout(() => document.getElementById(modalId).classList.add('show'), 10);
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('show');
+        setTimeout(() => document.getElementById(modalId).classList.add('hidden'), 300);
+    }
+    
+    function setDashboardTab(tabName) {
+        ['profile', 'schemes', 'status'].forEach(name => {
+            document.getElementById(`tab-${name}`).classList.remove('tab-active');
+            document.getElementById(`tab-${name}`).classList.add('tab-inactive');
+            document.getElementById(`content-${name}`).classList.add('hidden');
+        });
+        document.getElementById(`tab-${tabName}`).classList.add('tab-active');
+        document.getElementById(`tab-${tabName}`).classList.remove('tab-inactive');
+        document.getElementById(`content-${tabName}`).classList.remove('hidden');
+        document.getElementById('app-container').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function login() {
+        if (document.getElementById('farmer-id-input').value.trim().length < 4) {
+            alertMessage('Please enter a valid ID', 'error');
+            return;
+        }
+        isAuthenticated = true;
+        navigate('dashboard');
+        setDashboardTab('profile'); 
+        alertMessage('Welcome back, Rajesh Kumar!', 'success');
+        document.getElementById('logout-menu-btn').style.display = 'flex';
+    }
+
+    function logout() {
+        isAuthenticated = false;
+        navigate('home');
+        toggleMenu(); 
+        alertMessage('You have successfully logged out.', 'info');
+    }
+
+    function applyForScheme(schemeId) {
+        alertMessage(`Application for ${schemeId.toUpperCase()} submitted!`, 'success');
+        const schemeCard = document.getElementById(`scheme-${schemeId}`);
+        if (schemeCard) {
+            const button = schemeCard.querySelector('button');
+            button.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            button.classList.add('opacity-75', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                button.style.display = 'none';
+                const refId = 'APP-' + Math.floor(100000 + Math.random() * 900000);
+                const successHTML = `
+                    <div class="mt-3 bg-green-50 border border-green-200 rounded-lg p-4 success-anim">
+                        <div class="flex items-start gap-3">
+                            <div class="bg-green-100 p-2 rounded-full shrink-0">
+                                <i class="fa-solid fa-check text-green-600"></i>
+                            </div>
+                            <div class="w-full">
+                                <h4 class="font-bold text-green-800 text-sm">Successfully Applied!</h4>
+                                <p class="text-xs text-green-700 mt-1">Ref ID: <span class="font-mono font-bold">${refId}</span></p>
+                                <div class="mt-3 flex gap-2">
+                                    <button onclick="setDashboardTab('status')" class="text-xs bg-white border border-green-200 text-green-700 px-3 py-2 rounded shadow-sm font-medium hover:bg-green-50 transition w-full">
+                                        Check Status
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                schemeCard.insertAdjacentHTML('beforeend', successHTML);
+                schemeCard.classList.remove('border-gray-100');
+                schemeCard.classList.add('border-green-500', 'border-l-4');
+            }, 1500); 
+        }
+    }
+    
+    function openSMAMActionModal() { openModal('smam-action-modal'); }
+
+    // Handle the "Link Profile Data" button
+    function autoFetchDocuments(schemeId) {
+        closeModal('smam-action-modal');
+        alertMessage('Linking verified land records...', 'info');
+        
+        setTimeout(() => {
+            updateSmamStatusUI('linked');
+        }, 1500);
+    }
+
+    // Handle the "Upload Document" button
+    function handleManualUpload(schemeId) {
+        const fileInput = document.getElementById('smam-file-upload');
+        
+        // Basic validation
+        if(fileInput.files.length === 0) {
+            alertMessage('Please select a document first.', 'error');
+            return;
+        }
+
+        closeModal('smam-action-modal');
+        alertMessage('Uploading document...', 'info');
+
+        // Simulate upload delay
+        setTimeout(() => {
+            updateSmamStatusUI('uploaded');
+            // Clear input for next time
+            fileInput.value = ''; 
+        }, 2000);
+    }
+
+    // Shared function to update the UI Status Card
+    function updateSmamStatusUI(method) {
+        const smamCard = document.getElementById('smam-card');
+        const badge = document.getElementById('smam-status-badge');
+        const msgBox = document.getElementById('smam-message-box');
+        const actionBtn = smamCard.querySelector('button'); // The 'Take Action' button
+
+        // 1. Change Border Color to Yellow (In Review)
+        smamCard.classList.remove('border-red-500');
+        smamCard.classList.add('border-yellow-500');
+
+        // 2. Update Status Badge
+        badge.className = "bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1";
+        badge.innerHTML = '<i class="fa-solid fa-clock"></i> In Review';
+
+        // 3. Update Message Box based on method used
+        if(method === 'linked') {
+            msgBox.innerHTML = `
+                <p class="text-sm text-yellow-700 font-medium">
+                    <i class="fa-solid fa-link mr-1"></i> Land details linked from profile.
+                </p>`;
+        } else {
+            msgBox.innerHTML = `
+                <p class="text-sm text-yellow-700 font-medium">
+                    <i class="fa-solid fa-file-circle-check mr-1"></i> Document uploaded successfully.
+                </p>`;
+        }
+
+        // 4. Hide the "Take Action" button on the dashboard card
+        if(actionBtn) actionBtn.style.display = 'none';
+
+        alertMessage('Application status updated to "In Review".', 'success');
+    }
+    
+    function openRoRModal(surveyNo, area) {
+        document.getElementById('ror-survey-no').textContent = surveyNo;
+        document.getElementById('ror-area').textContent = area;
+        openModal('ror-details-modal');
+    }
+    
+    function setLandLinkTab(tabName) {
+        document.getElementById('land-content-location').classList.add('hidden');
+        document.getElementById('land-content-ulpin').classList.add('hidden');
+        document.getElementById('land-content-geo').classList.add('hidden');
+        ['location', 'ulpin', 'geo'].forEach(name => {
+            document.getElementById(`land-tab-${name}`).className = `flex-1 pb-3 text-sm font-medium land-tab-inactive transition-colors flex flex-col items-center gap-1`;
+        });
+        document.getElementById(`land-content-${tabName}`).classList.remove('hidden');
+        document.getElementById(`land-tab-${tabName}`).className = `flex-1 pb-3 text-sm font-medium land-tab-active transition-colors flex flex-col items-center gap-1`;
+    }
+
+    function simulateLandSearch(tabName, resultType) {
+        // Reset states
+        document.getElementById('land-search-result-found').classList.add('hidden');
+        document.getElementById('land-search-result-error').classList.add('hidden');
+        document.getElementById('land-search-result-pending').classList.add('hidden');
+        document.getElementById('land-search-result-linked').classList.add('hidden');
+
+        const contentDiv = document.getElementById(`land-content-${tabName}`);
+        let btn = contentDiv.querySelector('button');
+        // refine selector if multiple buttons exist in tab content
+        if(tabName === 'location') btn = contentDiv.querySelectorAll('button')[0]; 
+        if(tabName === 'ulpin') btn = contentDiv.querySelector('button:last-of-type'); 
+        if(tabName === 'geo') btn = contentDiv.querySelector('button');
+
+        if(btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
+
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-75');
+
+                let resultId;
+                if (resultType === true) resultId = 'land-search-result-found';
+                else if (resultType === false) resultId = 'land-search-result-error';
+                else if (resultType === 'pending') resultId = 'land-search-result-pending';
+
+                if (resultId) {
+                    const el = document.getElementById(resultId);
+                    el.classList.remove('hidden');
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 1000);
+        }
+    }
+    
+    function linkLandToProfile(khasraNumber) {
+        document.getElementById('land-search-result-found').classList.add('hidden');
+        document.getElementById('linked-khasra-display').textContent = khasraNumber;
+        document.getElementById('land-search-result-linked').classList.remove('hidden');
+        alertMessage(`Land ${khasraNumber} linked!`, 'success');
+    }
+
+    function startScanner() {
+        const scannerUI = document.getElementById('ulpin-scanner-ui');
+        const inputField = document.getElementById('ulpin-input');
+        
+        inputField.value = '';
+        scannerUI.classList.remove('hidden');
+        scannerUI.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        setTimeout(() => {
+            inputField.value = "MP-VID-2024-12X8";
+            scannerUI.classList.add('hidden');
+            simulateLandSearch('ulpin', true);
+        }, 2000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateLanguageDropdown();
+        navigate('home');
+        isAuthenticated = false;
+        document.getElementById('logout-menu-btn').style.display = 'none';
+        
+        // Hide drop-down if clicked outside
+        document.addEventListener('click', (e) => {
+            const btn = document.querySelector('.lang-btn-container button');
+            const menu = document.getElementById('language-dropdown');
+            if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
